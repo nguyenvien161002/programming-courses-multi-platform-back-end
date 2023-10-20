@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/programming_courses_multi_platform
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: mysql
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+  jackson:
+    time-zone: Asia/Ho_Chi_Minh
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .jsp
+    cache: false
+#JWT properties
+application:
+  security:
+    jwt:
+      secret-key: Y3a1peYV1vmEUZHIPQsohy6mIyIeG4HAZ2YAbjWtAvzxFerER/tnxW4lR1OLOCXG
+      expiration: 86400000 # a day
+      refresh-token:
+        expiration: 604800000 # 7 days
