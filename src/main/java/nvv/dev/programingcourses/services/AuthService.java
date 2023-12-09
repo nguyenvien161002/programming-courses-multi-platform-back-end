@@ -7,7 +7,7 @@ import nvv.dev.programingcourses.models.User;
 import nvv.dev.programingcourses.request.SignInRequest;
 import nvv.dev.programingcourses.request.SignUpRequest;
 import nvv.dev.programingcourses.response.AuthenticationResponse;
-import org.jetbrains.annotations.NotNull;
+import nvv.dev.programingcourses.utilities.Generate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -55,7 +55,7 @@ public class AuthService {
                 .firstName(firstName)
                 .lastName(lastName)
                 .fullName(String.format("%s %s", firstName, lastName))
-                .userName(generateUsername(firstName, lastName))
+                .userName(Generate.generateUsername(userService, firstName, lastName))
                 .email(email)
                 .password(passwordEncoder.encode(request.getPassword()))
                 .updatedAt(new Date())
@@ -65,7 +65,7 @@ public class AuthService {
         userService.save(user);
         String jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
-                .message("Sign up successfully!")
+                .message("Sign up successfully")
                 .token(jwtToken)
                 .build();
     }
@@ -84,23 +84,5 @@ public class AuthService {
                 .token(jwtToken)
                 .build();
     }
-
-    public String generateUsername(String firstname, String lastname) {
-        String username = normalizeName(firstname) + normalizeName(lastname);
-        int suffix = 1;
-        String originalUsername = username;
-        while (userService.existsByUsername(username)) {
-            username = originalUsername + suffix;
-            suffix++;
-        }
-        return username;
-    }
-
-    private String normalizeName(String name) {
-        return Normalizer.normalize(name.toLowerCase(), Normalizer.Form.NFD)
-                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
-                .replaceAll("\\s", "");
-    }
-
 
 }

@@ -21,8 +21,8 @@ public class SignUpController {
     public ResponseEntity<AuthenticationResponse> signup(@RequestBody SignUpRequest request) {
         if(userService.existsByEmail(request.getEmail())) {
             AuthenticationResponse authResponse = AuthenticationResponse.builder()
-                    .message("Email already exists.")
-                    .token("Error by exists email.")
+                    .message("Email already exists")
+                    .token("Error by exists email")
                     .build();
             return ResponseEntity.badRequest().body(authResponse);
         }

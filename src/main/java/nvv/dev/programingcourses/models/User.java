@@ -1,6 +1,7 @@
 package nvv.dev.programingcourses.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,10 +15,10 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "_users")
+@Table(name = "users")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "first_name")
     private String firstName;
@@ -39,13 +40,14 @@ public class User implements UserDetails {
     private String email;
     @Column(name = "phone_number")
     private String phoneNumber;
+    @JsonIgnore
     @Column(name = "password", nullable = false)
     private String password;
     @Column(name = "updated_at")
-    @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
+    @JsonFormat(pattern = "yyyy/MM/dd ss::mm::HH")
     private Date updatedAt;
     @Column(name = "created_at")
-    @JsonFormat(pattern = "HH:mm:ss dd/MM/yyyy")
+    @JsonFormat(pattern = "yyyy/MM/dd ss::mm::HH")
     private Date createdAt;
     @Column(name = "facebook_url")
     private String facebookUrl;
@@ -61,7 +63,7 @@ public class User implements UserDetails {
     private Boolean isCommentBlocked;
     @Column(name = "is_blocked")
     private Boolean isBlocked;
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),

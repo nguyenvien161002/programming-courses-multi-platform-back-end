@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/programming_courses_multi_platform
+    url: jdbc:mysql://localhost:3307/programming_courses_multi_platform
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password:
@@ -18,8 +18,17 @@ spring:
     prefix: classpath:/templates/
     suffix: .jsp
     cache: false
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
 #JWT properties
 application:
+  base-url: 'http://localhost:8080'
+  upload-url: '/v3d8-prod/courses'
+  upload-image-path: '/uploads/images/'
+  upload-icon-path: '/uploads/icons/'
+  upload-video-path: '/uploads/videos/'
   security:
     jwt:
       secret-key: Y3a1peYV1vmEUZHIPQsohy6mIyIeG4HAZ2YAbjWtAvzxFerER/tnxW4lR1OLOCXG

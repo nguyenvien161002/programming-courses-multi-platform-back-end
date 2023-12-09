@@ -1,26 +1,24 @@
 package nvv.dev.programingcourses.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "_courses")
+@Table(name = "courses")
 public class Course {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(nullable = false)
     private String title;
-    @Column(nullable = false, unique = true)
     private String slug;
     private String description;
     private String image;
@@ -36,15 +34,15 @@ public class Course {
     @Column(name = "students_count")
     private Integer studentsCount;
     @Column(name = "is_pro")
-    private boolean isPro;
+    private Boolean isPro;
     @Column(name = "is_coming_soon")
-    private boolean isComingSoon;
+    private Boolean isComingSoon;
     @Column(name = "is_selling")
-    private boolean isSelling;
+    private Boolean isSelling;
     @Column(name = "published_at")
     private Date publishedAt;
     @Column(name = "is_registered")
-    private boolean isRegistered;
+    private Boolean isRegistered;
     @Column(name = "user_progress")
     private Integer userProgress;
     @Column(name = "last_completed_at")
@@ -58,8 +56,21 @@ public class Course {
     @Column(name = "landing_page_url")
     private String landingPageUrl;
     @Column(name = "is_pre_order")
-    private boolean isPreOrder;
+    private Boolean isPreOrder;
     @Column(name = "isPublished")
-    private boolean is_published;
+    private Boolean isPublished;
+    @Column(name = "updated_at")
+    @JsonFormat(pattern = "yyyy/MM/dd ss::mm::HH")
+    private Date updatedAt;
+    @Column(name = "created_at")
+    @JsonFormat(pattern = "yyyy/MM/dd ss::mm::HH")
+    private Date createdAt;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "courses_uploads",
+            joinColumns = @JoinColumn(name = "course_id"),
+            inverseJoinColumns = @JoinColumn(name = "upload_id")
+    )
+    private Set<Upload> uploads = new HashSet<>();
 }
 
